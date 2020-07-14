@@ -2,6 +2,7 @@
 name = "flask_threaded_sockets"
 version = "0.1.0"
 description = "Barebones websocket extension for Flask, using Pythonthreading for low-traffic concurrency"
+readme = "README.md"
 authors = ["Joel Collins <joel@jtcollins.net>"]
 classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
