@@ -3,7 +3,7 @@ import base64
 import hashlib
 
 from .logging import create_logger
-from .ws import WebSocket, Stream
+from .websocket import WebSocket, Stream
 
 class Client(object):
     def __init__(self, address, ws):
@@ -41,7 +41,6 @@ class WebSocketHandler(WSGIRequestHandler):
         """
         Main entry point for our WSGI server
         """
-
         # Get the request WSGI environment
         self.environ = self.make_environ()
 
@@ -83,7 +82,7 @@ class WebSocketHandler(WSGIRequestHandler):
         try:
             self.server.clients[self.client_address] = Client(
                 self.client_address, self.websocket)
-            self.server.app(self.environ, None)
+            self.server.app(self.environ, (lambda s, h, e=None: []))
         finally:
             if self.client_address in self.server.clients:
                 del self.server.clients[self.client_address]
