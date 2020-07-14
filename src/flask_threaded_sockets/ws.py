@@ -455,7 +455,6 @@ class WebSocket(object):
         header = Header.encode_header(True, opcode, b"", len(message), flags)
 
         try:
-            print(header + message)
             self.raw_write(header + message)
         except socket.error:
             raise WebSocketError(MSG_SOCKET_DEAD)
