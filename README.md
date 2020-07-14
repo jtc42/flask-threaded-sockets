@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
 Usage of `Flask blueprints`:
 
-```
+```python
 from flask import Flask, Blueprint
 from flask_threaded_sockets.flask import Sockets
 from flask_threaded_sockets.serving import ThreadedWsWSGIServer
@@ -68,6 +68,12 @@ if __name__ == "__main__":
 Serving WebSockets in Python was really easy, if you used Gevent, AsyncIO, etc. Now it's easy if you just want to use a threaded development server.
 
 **This should not be used in deployed web apps with lots of requests expected! We developed this library for use in low-traffic IoT devices that benefit from using native Python threads**
+
+## Installation
+
+To install Flask-Sockets, simply:
+
+```pip install Flask-Sockets```
 
 ## WebSocket Interface
 
