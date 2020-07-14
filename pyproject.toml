@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "flask_threaded_sockets"
+version = "0.1.0"
+description = "Barebones websocket extension for Flask, using Pythonthreading for low-traffic concurrency"
+authors = ["Joel Collins <joel@jtcollins.net>"]
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Internet :: WWW/HTTP :: WSGI"
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+werkzeug = "^1.0.1"
+
+[tool.poetry.dev-dependencies]
+
+[tool.black]
+exclude = '(\.eggs|\.git|\.venv)'
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
