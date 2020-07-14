@@ -11,7 +11,7 @@ class Client(object):
         self.ws = ws
 
 
-class WsWSGIRequestHandler(WSGIRequestHandler):
+class WebSocketHandler(WSGIRequestHandler):
 
     SUPPORTED_VERSIONS = ('13', '8', '7')
     GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
@@ -316,7 +316,7 @@ class ThreadedWsWSGIServer(ThreadedWSGIServer):
         fd=None,
     ):
         if handler is None:
-            handler = WsWSGIRequestHandler
+            handler = WebSocketHandler
 
         ThreadedWSGIServer.__init__(
             self,
