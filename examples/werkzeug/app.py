@@ -10,6 +10,7 @@ from flask_threaded_sockets.serving import ThreadedWsWSGIServer
 def handle(ws):
     """  This is the websocket handler function.  Note that we
     can dispatch based on path in here, too."""
+
     if ws.path == "/echo":
         while not ws.closed:
             message = ws.receive()

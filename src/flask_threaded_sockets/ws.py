@@ -31,87 +31,11 @@ class WebSocketWSGI(object):
         self.handler = handler
 
     def __call__(self, environ, start_response):
-        if not (
-            environ.get("HTTP_CONNECTION").find("Upgrade") != -1
-            and environ["HTTP_UPGRADE"].lower() == "websocket"
-        ):
-            # need to check a few more things here for true compliance
+        if not environ.get("wsgi.websocket"):
             start_response("400 Bad Request", [("Connection", "close")])
             return []
 
-        stream = Stream(environ["wsgi.websocket"])
-
-        version = environ.get("HTTP_SEC_WEBSOCKET_VERSION")
-
-        ws = WebSocket(stream, environ, version)
-
-        handshake_reply = (
-            "HTTP/1.1 101 Switching Protocols\r\n"
-            "Upgrade: websocket\r\n"
-            "Connection: Upgrade\r\n"
-        )
-
-        key = environ.get("HTTP_SEC_WEBSOCKET_KEY")
-        if key:
-            ws_key = base64.b64decode(key)
-            if len(ws_key) != 16:
-                start_response("400 Bad Request", [("Connection", "close")])
-                return []
-
-            protocols = []
-            subprotocols = environ.get("HTTP_SEC_WEBSOCKET_PROTOCOL")
-            ws_protocols = []
-            if subprotocols:
-                for s in subprotocols.split(","):
-                    s = s.strip()
-                    if s in protocols:
-                        ws_protocols.append(s)
-            if ws_protocols:
-                handshake_reply += "Sec-WebSocket-Protocol: %s\r\n" % ", ".join(
-                    ws_protocols
-                )
-
-            exts = []
-            extensions = environ.get("HTTP_SEC_WEBSOCKET_EXTENSIONS")
-            ws_extensions = []
-            if extensions:
-                for ext in extensions.split(","):
-                    ext = ext.strip()
-                    if ext in exts:
-                        ws_extensions.append(ext)
-            if ws_extensions:
-                handshake_reply += "Sec-WebSocket-Extensions: %s\r\n" % ", ".join(
-                    ws_extensions
-                )
-
-            key_hash = hashlib.sha1()
-            key_hash.update(key.encode())
-            key_hash.update(WS_KEY)
-
-            handshake_reply += (
-                "Sec-WebSocket-Origin: %s\r\n"
-                "Sec-WebSocket-Location: ws://%s%s\r\n"
-                "Sec-WebSocket-Version: %s\r\n"
-                "Sec-WebSocket-Accept: %s\r\n\r\n"
-                % (
-                    environ.get("HTTP_ORIGIN"),
-                    environ.get("HTTP_HOST"),
-                    ws.path,
-                    version,
-                    base64.b64encode(key_hash.digest()).decode(),
-                )
-            )
-
-        else:
-
-            handshake_reply += (
-                "WebSocket-Origin: %s\r\n"
-                "WebSocket-Location: ws://%s%s\r\n\r\n"
-                % (environ.get("HTTP_ORIGIN"), environ.get("HTTP_HOST"), ws.path)
-            )
-
-        stream.write(handshake_reply.encode())
-
+        ws = environ["wsgi.websocket"]
         self.handler(ws)
 
 
@@ -142,7 +66,7 @@ class WebSocket(object):
     OPCODE_PING = 0x09
     OPCODE_PONG = 0x0A
 
-    def __init__(self, stream, environ, do_compress=False, logger=MODULE_LOGGER):
+    def __init__(self, environ, stream, do_compress=False, logger=MODULE_LOGGER):
         """
         :param socket: The eventlet socket
         :type socket: :class:`eventlet.greenio.GreenSocket`
