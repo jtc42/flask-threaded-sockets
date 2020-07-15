@@ -73,7 +73,7 @@ Serving WebSockets in Python was really easy, if you used Gevent, AsyncIO, etc. 
 
 To install Flask-Sockets, simply:
 
-```pip install Flask-Sockets```
+```pip install flask-threaded-sockets```
 
 ## WebSocket Interface
 
