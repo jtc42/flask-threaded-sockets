@@ -303,7 +303,7 @@ class WebSocketHandler(WSGIRequestHandler):
 
 
 
-class ThreadedWsWSGIServer(ThreadedWSGIServer):
+class ThreadedWebsocketServer(ThreadedWSGIServer):
     def __init__(
         self,
         host,
