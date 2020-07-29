@@ -5,7 +5,7 @@ Simple usage of ``route`` decorator:
 
 ```python
 from flask import Flask
-from flask_threaded_sockets import Sockets, ThreadedWsWSGIServer
+from flask_threaded_sockets import Sockets, ThreadedWebsocketServer
 
 
 app = Flask(__name__)
@@ -25,7 +25,7 @@ def hello():
 
 
 if __name__ == "__main__":
-    srv = ThreadedWsWSGIServer("0.0.0.0", 5000, app)
+    srv = ThreadedWebsocketServer("0.0.0.0", 5000, app)
     srv.serve_forever()
 ```
 
@@ -33,7 +33,7 @@ Usage of `Flask blueprints`:
 
 ```python
 from flask import Flask, Blueprint
-from flask_threaded_sockets import Sockets, ThreadedWsWSGIServer
+from flask_threaded_sockets import Sockets, ThreadedWebsocketServer
 
 
 html = Blueprint(r'html', __name__)
@@ -59,7 +59,7 @@ sockets.register_blueprint(ws, url_prefix=r'/')
 
 
 if __name__ == "__main__":
-    srv = ThreadedWsWSGIServer("0.0.0.0", 5000, app)
+    srv = ThreadedWebsocketServer("0.0.0.0", 5000, app)
     srv.serve_forever()
 ```
 
