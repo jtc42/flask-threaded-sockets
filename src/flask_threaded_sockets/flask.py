@@ -6,6 +6,7 @@ from flask.helpers import _endpoint_from_view_func
 
 from pprint import pprint
 
+
 class WsUrlAdapterWrapper(object):
     def __init__(self, app_adapter, sockets_adapter):
         self.__app_adapter = app_adapter
@@ -20,6 +21,14 @@ class WsUrlAdapterWrapper(object):
         append_unknown=True,
     ):
         try:
+            return self.__app_adapter.build(
+                endpoint=endpoint,
+                values=values,
+                method=method,
+                force_external=force_external,
+                append_unknown=append_unknown,
+            )
+        except BuildError:
             return (
                 "ws"
                 + self.__sockets_adapter.build(
@@ -29,14 +38,6 @@ class WsUrlAdapterWrapper(object):
                     force_external=True,
                     append_unknown=append_unknown,
                 )[4:]
-            )
-        except BuildError:
-            return self.__app_adapter.build(
-                endpoint=endpoint,
-                values=values,
-                method=method,
-                force_external=force_external,
-                append_unknown=append_unknown,
             )
 
     def __getattr__(self, attr):
