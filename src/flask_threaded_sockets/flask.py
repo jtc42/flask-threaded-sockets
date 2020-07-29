@@ -146,8 +146,7 @@ class Sockets:
 
             # Handle environment
             if not environ.get("wsgi.websocket"):
-                start_response("400 Bad Request", [("Connection", "close")])
-                return [b"The requested URL will only accept websocket connections"]
+                return self.app_wsgi_app(environ, start_response)
 
             ws = environ["wsgi.websocket"]
 
