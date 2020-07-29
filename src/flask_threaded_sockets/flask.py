@@ -107,8 +107,6 @@ class Sockets:
         self.url_map.add(Rule(rule, endpoint=endpoint, **options))
         self.view_functions[endpoint] = f
 
-        self.app.add_url_rule(rule, endpoint, f, **options)
-
     def add_view(self, url, f, endpoint=None, **options):
         return self.add_url_rule(url, endpoint, f, **options)
 
