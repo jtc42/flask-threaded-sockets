@@ -4,8 +4,6 @@ from werkzeug.http import parse_cookie
 from flask import request
 from flask.helpers import _endpoint_from_view_func
 
-from pprint import pprint
-
 
 class WsUrlAdapterWrapper(object):
     def __init__(self, app_adapter, sockets_adapter):
