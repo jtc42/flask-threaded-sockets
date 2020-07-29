@@ -28,14 +28,14 @@ class WsUrlAdapterWrapper(object):
             )
         except BuildError:
             return (
-                "ws"
+                "ws://"
                 + self.__sockets_adapter.build(
                     endpoint=endpoint,
                     values=values,
                     method=None,
                     force_external=True,
                     append_unknown=append_unknown,
-                )[4:]
+                ).split("://")[1]
             )
 
     def __getattr__(self, attr):
@@ -91,19 +91,17 @@ class Sockets:
     def route(self, rule, **options):
         def decorator(f):
             endpoint = options.pop("endpoint", None)
-            self.add_url_rule(rule, endpoint, f, **options)
+            self.add_url_rule(rule, endpoint=endpoint, view_func=f, **options)
             return f
 
         return decorator
 
-    def add_url_rule(self, rule, endpoint, f, **options):
+    def add_url_rule(self, rule, endpoint=None, view_func=None, **options):
         if endpoint is None:
-            endpoint = _endpoint_from_view_func(f)
-
-        setattr(f, "endpoint", endpoint)
+            endpoint = _endpoint_from_view_func(view_func)
 
         self.url_map.add(Rule(rule, endpoint=endpoint, **options))
-        self.view_functions[endpoint] = f
+        self.view_functions[endpoint] = view_func
 
     def add_view(self, url, f, endpoint=None, **options):
         return self.add_url_rule(url, endpoint, f, **options)
