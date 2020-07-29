@@ -3,8 +3,8 @@ import os
 import random
 import time
 
-from flask_threaded_sockets.ws import WebSocketWSGI
-from flask_threaded_sockets.serving import ThreadedWsWSGIServer
+from flask_threaded_sockets.websocket import WebSocketWSGI
+from flask_threaded_sockets import ThreadedWebsocketServer
 
 
 def handle(ws):
@@ -44,5 +44,5 @@ def app(environ, start_response):
 
 
 if __name__ == "__main__":
-    srv = ThreadedWsWSGIServer("0.0.0.0", 5000, app)
+    srv = ThreadedWebsocketServer("0.0.0.0", 5000, app)
     srv.serve_forever()

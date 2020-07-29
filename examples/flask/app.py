@@ -1,7 +1,7 @@
 from flask import Flask
-from flask_threaded_sockets.flask import Sockets
-from flask_threaded_sockets.serving import ThreadedWsWSGIServer
+from flask_threaded_sockets import Sockets, ThreadedWebsocketServer
 
+import time
 
 app = Flask(__name__)
 sockets = Sockets(app)
@@ -19,6 +19,13 @@ def hello():
     return 'Hello World!'
 
 
+@sockets.route('/')
+def hello_socket(ws):
+    while not ws.closed:
+        ws.send("Hello World!")
+        time.sleep(1)
+
+
 if __name__ == "__main__":
-    srv = ThreadedWsWSGIServer("0.0.0.0", 5000, app)
+    srv = ThreadedWebsocketServer("0.0.0.0", 5000, app)
     srv.serve_forever()
