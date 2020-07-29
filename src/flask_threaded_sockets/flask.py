@@ -101,16 +101,12 @@ class Sockets:
         if endpoint is None:
             endpoint = _endpoint_from_view_func(f)
 
-        methods = options.pop("methods", None)
-
         setattr(f, "endpoint", endpoint)
 
         self.url_map.add(Rule(rule, endpoint=endpoint, **options))
         self.view_functions[endpoint] = f
 
-        if methods is None:
-            methods = []
-        self.app.add_url_rule(rule, endpoint, f, methods=methods, **options)
+        self.app.add_url_rule(rule, endpoint, f, **options)
 
     def add_view(self, url, f, endpoint=None, **options):
         return self.add_url_rule(url, endpoint, f, **options)
