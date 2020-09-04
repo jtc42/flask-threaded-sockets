@@ -26,11 +26,7 @@ class WebSocketHandler(WSGIRequestHandler):
     @property
     def logger(self):
         if not hasattr(self, "_logger"):
-            if hasattr(self.server, "log"):
-                self._logger = create_logger(__name__, handlers=(self.server.log,))
-            else:
-                self._logger = create_logger(__name__)
-
+            self._logger = create_logger(__name__)
         return self._logger
 
     def make_ws_environ(self):
