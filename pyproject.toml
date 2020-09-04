@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flask_threaded_sockets"
-version = "0.3.0"
+version = "0.3.1"
 description = "Barebones websocket extension for Flask, using Pythonthreading for low-traffic concurrency"
 readme = "README.md"
 authors = ["Joel Collins <joel@jtcollins.net>"]
