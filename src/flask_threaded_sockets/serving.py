@@ -40,7 +40,6 @@ class WebSocketHandler(WSGIRequestHandler):
         # Get the request WSGI environment
         self.environ = self.make_environ()
 
-        self.logger.debug("Initializing WebSocket")
         # Try to upgrade the connection to a websocket.
         # If the client requested an upgrade, and there were no errors, this will
         # return the writer callable from start_response for a websocket upgrade.
